@@ -26,6 +26,8 @@ const NavBar = () => {
                 <Link to="/" onClick={handleSignOut}>
                   SIGN OUT
                 </Link>
+                <Link to="/new">Create Form</Link>
+                <Link to="/all">View Events</Link>
               </li>
             </ul>
           ) : (

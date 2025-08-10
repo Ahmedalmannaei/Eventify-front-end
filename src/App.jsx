@@ -6,6 +6,8 @@ import SignUpForm from "./components/SignUpForm/SignUpForm.jsx";
 import SignInForm from "./components/SignInForm/SignInForm.jsx";
 import { UserContext } from "./contexts/UserContext";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
+import EventForm from "./components/EventForm/EventForm.jsx";
+import ShowEvents from "./components/ShowEvents/ShowEvents.jsx";
 
 const App = () => {
   const { user } = useContext(UserContext);
@@ -15,7 +17,11 @@ const App = () => {
       <Routes>
         <Route path="/" element={user ? <Dashboard /> : <Landing />} />
         {user ? (
-          <>{/* Protected routes (available only to signed-in users) */}</>
+          <>
+            {/* Protected routes (available only to signed-in users) */}
+            <Route path="new" element={<EventForm />} />
+            <Route path="all" element={<ShowEvents />} />
+          </>
         ) : (
           <>
             {/* Non-user routes (available only to guests) */}
