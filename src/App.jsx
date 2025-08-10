@@ -7,6 +7,7 @@ import SignInForm from "./components/SignInForm/SignInForm.jsx";
 import { UserContext } from "./contexts/UserContext";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import EventForm from "./components/EventForm/EventForm.jsx";
+import ShowEvents from "./components/ShowEvents/ShowEvents.jsx";
 
 const App = () => {
   const { user } = useContext(UserContext);
@@ -19,6 +20,7 @@ const App = () => {
           <>
             {/* Protected routes (available only to signed-in users) */}
             <Route path="new" element={<EventForm />} />
+            <Route path="all" element={<ShowEvents />} />
           </>
         ) : (
           <>
