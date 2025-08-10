@@ -27,7 +27,7 @@ const ShowEvents = () => {
         <ul>
           {events.map((event) => (
             <li key={event._id}>
-              <strong>{event.name}</strong> — {event.date}
+              <strong>{event.name}</strong>
               {event.owner && ` (Owner: ${event.owner.username})`}
             </li>
           ))}
