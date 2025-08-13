@@ -21,10 +21,7 @@ const App = () => {
         {user ? (
           <>
             {/* Protected routes (available only to signed-in users) */}
-            <Route
-              path="new"
-              element={<EventForm  />}
-            />
+            <Route path="new" element={<EventForm />} />
             <Route path="all" element={<ShowEvents />} />
           </>
         ) : (
@@ -32,6 +29,7 @@ const App = () => {
             {/* Non-user routes (available only to guests) */}
             <Route path="/sign-up" element={<SignUpForm />} />
             <Route path="/sign-in" element={<SignInForm />} />
+            <Route path="/events/show/:id" element={<EventDetails />} />
           </>
         )}
       </Routes>

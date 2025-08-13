@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getEvents } from "../../services/eventService";
+import { Link } from "react-router-dom";
 
 const ShowEvents = () => {
   const [events, setEvents] = useState([]);
@@ -27,8 +28,10 @@ const ShowEvents = () => {
         <ul>
           {events.map((event) => (
             <li key={event._id}>
-              <strong>{event.name}</strong>
-              {event.owner && ` (Owner: ${event.owner.username})`}
+              <Link to={`/events/show/${event._id}`}>
+                <strong>{event.name}</strong>
+                {event.owner && ` (Owner: ${event.owner.username})`}
+              </Link>
             </li>
           ))}
         </ul>
