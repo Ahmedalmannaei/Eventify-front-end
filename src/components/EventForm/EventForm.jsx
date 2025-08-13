@@ -16,7 +16,7 @@ const EventForm = (props) => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:3000/api/events", {
+      const res = await fetch("http://localhost:3000/events", {
         // change to your backend URL
         method: "POST",
         headers: {
@@ -29,7 +29,7 @@ const EventForm = (props) => {
         throw new Error("Failed to create event");
       }
       const data = await res.json();
-      setFormData({
+      setformData({
         name: "",
         address: "",
         dateTime: "",
