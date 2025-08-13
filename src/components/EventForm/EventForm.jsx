@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const EventForm = () => {
+const EventForm = (props) => {
   const [formData, setformData] = useState({
     name: "",
     address: "",
@@ -11,8 +11,34 @@ const EventForm = () => {
   const handleChange = (event) => {
     setformData({ ...formData, [event.target.name]: event.target.value });
   };
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await fetch("http://localhost:3000/api/events", {
+        // change to your backend URL
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) {
+        throw new Error("Failed to create event");
+      }
+      const data = await res.json();
+      setFormData({
+        name: "",
+        address: "",
+        dateTime: "",
+        owner: "",
+        description: "",
+      });
+    } catch (err) {}
+    {
+    }
   };
   return (
     <>
@@ -53,7 +79,7 @@ const EventForm = () => {
           onChange={handleChange}
         />
 
-        <button type="submit">Create Event</button>
+        <button>Create Event</button>
       </form>
     </>
   );
