@@ -1,10 +1,6 @@
-// src/components/SignInForm/SignInForm.jsx
-
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router";
-
 import { signIn } from "../../services/authService";
-
 import { UserContext } from "../../contexts/UserContext";
 
 const SignInForm = () => {
@@ -24,10 +20,7 @@ const SignInForm = () => {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     try {
-      // This function doesn't exist yet, but we'll create it soon.
-      // It will cause an error right now
       const signedInUser = await signIn(formData);
-
       setUser(signedInUser);
       navigate("/");
     } catch (err) {
@@ -36,39 +29,59 @@ const SignInForm = () => {
   };
 
   return (
-    <main>
-      <h1>Sign In</h1>
-      <p>{message}</p>
-      <form autoComplete="off" onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Username:</label>
-          <input
-            type="text"
-            autoComplete="off"
-            id="username"
-            value={formData.username}
-            name="username"
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            autoComplete="off"
-            id="password"
-            value={formData.password}
-            name="password"
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <button>Sign In</button>
-          <button onClick={() => navigate("/")}>Cancel</button>
-        </div>
-      </form>
+    <main className="flex justify-center items-center min-h-screen bg-base-200">
+      <div className="card w-full max-w-md shadow-lg bg-base-100 p-6">
+        <h1 className="text-2xl font-bold mb-4 text-center">Sign In</h1>
+
+        {message && (
+          <p className="text-error text-sm mb-3 text-center">{message}</p>
+        )}
+
+        <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="username" className="label">
+              <span className="label-text">Username</span>
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor="password" className="label">
+              <span className="label-text">Password</span>
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+              required
+            />
+          </div>
+
+          <div className="flex gap-2 justify-end">
+            <button type="submit" className="btn btn-primary">
+              Sign In
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/")}
+              className="btn btn-ghost"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
     </main>
   );
 };
