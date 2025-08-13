@@ -1,3 +1,4 @@
+// src/components/EventForm/EventForm.jsx
 import { useState } from "react";
 
 const EventForm = () => {
@@ -5,11 +6,12 @@ const EventForm = () => {
     name: "",
     address: "",
     dateTime: "",
-    owner: "",
     description: "",
   });
+  const [message, setMessage] = useState("");
 
   const handleChange = (event) => {
+    setMessage("");
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
@@ -17,86 +19,142 @@ const EventForm = () => {
     event.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      console.log("Sending token:", token);
+      if (!token) {
+        setMessage("You must be signed in to create an event.");
+        return;
+      }
 
       const res = await fetch("http://localhost:3000/events", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // backend will derive owner from this
         },
         body: JSON.stringify({
           ...formData,
-          dateTime: new Date(formData.dateTime), 
+          // send a real Date to the backend (ISO string is fine too)
+          dateTime: new Date(formData.dateTime),
         }),
       });
 
       if (!res.ok) {
-        const errorData = await res.json();
-        console.error("Backend error:", errorData);
+        const errorData = await res.json().catch(() => ({}));
+        setMessage(
+          errorData?.err || errorData?.message || "Failed to create event."
+        );
         return;
       }
 
-      const data = await res.json();
-     
+      // Optionally read the created event (not used here)
+      await res.json();
 
-     
-      setFormData({
-        name: "",
-        address: "",
-        dateTime: "",
-        owner: "",
-        description: "",
-      });
+      // Clear form + show success
+      setFormData({ name: "", address: "", dateTime: "", description: "" });
+      setMessage("✅ Event created successfully!");
     } catch (err) {
       console.error("❌ Error submitting event:", err);
+      setMessage("Something went wrong. Please try again.");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="name">Name</label>
-      <input
-        id="name"
-        name="name"
-        type="text"
-        required
-        value={formData.name}
-        onChange={handleChange}
-      />
+    <main className="flex justify-center items-center min-h-screen bg-base-200">
+      <div className="card w-full max-w-lg bg-base-100 shadow-lg p-6">
+        <h1 className="text-2xl font-bold mb-4 text-center">Create Event</h1>
 
-      <label htmlFor="address">Address</label>
-      <input
-        id="address"
-        name="address"
-        type="text"
-        required
-        value={formData.address}
-        onChange={handleChange}
-      />
+        {message && (
+          <p
+            className={`text-sm mb-3 text-center ${
+              message.startsWith("✅") ? "text-success" : "text-error"
+            }`}
+          >
+            {message}
+          </p>
+        )}
 
-      <label htmlFor="dateTime">Date &amp; Time</label>
-      <input
-        id="dateTime"
-        name="dateTime"
-        type="datetime-local"
-        required
-        value={formData.dateTime}
-        onChange={handleChange}
-      />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="name" className="label">
+              <span className="label-text">Name</span>
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              value={formData.name}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+              required
+            />
+          </div>
 
-      <label htmlFor="description">Description</label>
-      <textarea
-        id="description"
-        name="description"
-        rows="4"
-        required
-        value={formData.description}
-        onChange={handleChange}
-      />
+          <div>
+            <label htmlFor="address" className="label">
+              <span className="label-text">Address</span>
+            </label>
+            <input
+              id="address"
+              name="address"
+              type="text"
+              value={formData.address}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+              required
+            />
+          </div>
 
-      <button type="submit">Create Event</button>
-    </form>
+          <div>
+            <label htmlFor="dateTime" className="label">
+              <span className="label-text">Date &amp; Time</span>
+            </label>
+            <input
+              id="dateTime"
+              name="dateTime"
+              type="datetime-local"
+              value={formData.dateTime}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor="description" className="label">
+              <span className="label-text">Description</span>
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              rows="4"
+              value={formData.description}
+              onChange={handleChange}
+              className="textarea textarea-bordered w-full"
+              required
+            />
+          </div>
+
+          <div className="flex justify-end gap-2">
+            <button type="submit" className="btn btn-primary">
+              Create Event
+            </button>
+            <button
+              type="reset"
+              onClick={() =>
+                setFormData({
+                  name: "",
+                  address: "",
+                  dateTime: "",
+                  description: "",
+                })
+              }
+              className="btn btn-ghost"
+            >
+              Clear
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
   );
 };
 
