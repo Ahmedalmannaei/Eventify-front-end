@@ -12,9 +12,7 @@ import ShowEvents from "./components/ShowEvents/ShowEvents.jsx";
 const App = () => {
   const { user } = useContext(UserContext);
   const [events, setEvents] = useState([]);
-  const handleAddEvent = (newEvents) => {
-    setEvents((previousEvents) => [...prevEvents], newEvents);
-  };
+
   return (
     <>
       <NavBar />
@@ -25,7 +23,7 @@ const App = () => {
             {/* Protected routes (available only to signed-in users) */}
             <Route
               path="new"
-              element={<EventForm addEvent={handleAddEvent} />}
+              element={<EventForm  />}
             />
             <Route path="all" element={<ShowEvents />} />
           </>
