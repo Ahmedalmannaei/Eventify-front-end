@@ -1,6 +1,7 @@
 // src/components/ShowEvents/ShowEvents.jsx
 import { useEffect, useState } from "react";
 import { getEvents } from "../../services/eventService";
+import { Link } from "react-router-dom";
 
 const ShowEvents = () => {
   const [events, setEvents] = useState([]);
@@ -29,6 +30,12 @@ const ShowEvents = () => {
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {events.map((event) => (
+            // <li key={event._id}>
+            //   <Link to={`/events/show/${event._id}`}>
+            //     <strong>{event.name}</strong>
+            //     {event.owner && ` (Owner: ${event.owner.username})`}
+            //   </Link>
+            // </li>
             <div key={event._id} className="card bg-base-100 shadow-lg">
               <div className="card-body">
                 <h2 className="card-title">{event.name}</h2>

@@ -8,4 +8,17 @@ const getEvents = async () => {
     return response.json();
   } catch (error) {}
 };
-export { getEvents };
+// src/services/hootService.js
+
+const showEvent = async (eventId) => {
+  try {
+    const res = await fetch(`${BASE_URL}/details/${eventId}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { getEvents, showEvent };
