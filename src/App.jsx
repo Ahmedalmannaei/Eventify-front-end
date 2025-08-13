@@ -12,27 +12,33 @@ import ShowEvents from "./components/ShowEvents/ShowEvents.jsx";
 const App = () => {
   const { user } = useContext(UserContext);
   const [events, setEvents] = useState([]);
-
+  const handleAddEvent = (newEvents) => {
+    setEvents((previousEvents) => [...prevEvents], newEvents);
+  };
   return (
     <>
       <NavBar />
-      <Routes>
-        <Route path="/" element={user ? <Dashboard /> : <Landing />} />
-        {user ? (
-          <>
-            {/* Protected routes (available only to signed-in users) */}
-            <Route path="new" element={<EventForm />} />
-            <Route path="all" element={<ShowEvents />} />
-          </>
-        ) : (
-          <>
-            {/* Non-user routes (available only to guests) */}
-            <Route path="/sign-up" element={<SignUpForm />} />
-            <Route path="/sign-in" element={<SignInForm />} />
-            <Route path="/events/show/:id" element={<EventDetails />} />
-          </>
-        )}
-      </Routes>
+      <div className="pt-16">
+        <Routes>
+          <Route path="/" element={user ? <Dashboard /> : <Landing />} />
+          {user ? (
+            <>
+              {/* Protected routes (available only to signed-in users) */}
+              <Route
+                path="new"
+                element={<EventForm addEvent={handleAddEvent} />}
+              />
+              <Route path="all" element={<ShowEvents />} />
+            </>
+          ) : (
+            <>
+              {/* Non-user routes (available only to guests) */}
+              <Route path="/sign-up" element={<SignUpForm />} />
+              <Route path="/sign-in" element={<SignInForm />} />
+            </>
+          )}
+        </Routes>
+      </div>
     </>
   );
 };
