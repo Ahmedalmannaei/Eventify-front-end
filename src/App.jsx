@@ -8,7 +8,8 @@ import { UserContext } from "./contexts/UserContext";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import EventForm from "./components/EventForm/EventForm.jsx";
 import ShowEvents from "./components/ShowEvents/ShowEvents.jsx";
-
+import EventDetails from "./components/EventDetails/EventDetails";
+import EditEvent from "./components/EditEvent/EditEvent.jsx";
 const App = () => {
   const { user } = useContext(UserContext);
   const [events, setEvents] = useState([]);
@@ -29,6 +30,8 @@ const App = () => {
                 element={<EventForm addEvent={handleAddEvent} />}
               />
               <Route path="all" element={<ShowEvents />} />
+              <Route path="/events/show/:id" element={<EventDetails />} />
+              <Route path="/events/edit/:id" element={<EditEvent />} />
             </>
           ) : (
             <>

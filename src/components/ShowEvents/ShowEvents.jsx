@@ -11,6 +11,7 @@ const ShowEvents = () => {
     const fetchData = async () => {
       try {
         const data = await getEvents();
+        console.log("Fetched events:", data);
         setEvents(data);
       } catch (err) {
         setError(err.message);
@@ -44,7 +45,6 @@ const ShowEvents = () => {
                     Owner: {event.owner.username}
                   </p>
                 )}
-                <p>{event.description}</p>
                 <p className="text-sm text-gray-400">📍 {event.address}</p>
                 {event.dateTime && (
                   <p className="text-sm text-gray-400">
@@ -52,7 +52,12 @@ const ShowEvents = () => {
                   </p>
                 )}
                 <div className="card-actions justify-end">
-                  <button className="btn btn-primary btn-sm">View</button>
+                  <Link
+                    to={`/events/show/${event._id}`}
+                    className="btn btn-primary btn-sm"
+                  >
+                    View
+                  </Link>
                 </div>
               </div>
             </div>
