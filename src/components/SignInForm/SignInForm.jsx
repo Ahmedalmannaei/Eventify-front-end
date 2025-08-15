@@ -22,6 +22,7 @@ const SignInForm = () => {
     try {
       const signedInUser = await signIn(formData);
       setUser(signedInUser);
+      localStorage.setItem("user", JSON.stringify(signedInUser));
       navigate("/");
     } catch (err) {
       setMessage(err.message);
