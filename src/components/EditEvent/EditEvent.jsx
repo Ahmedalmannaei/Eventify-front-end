@@ -1,7 +1,10 @@
-// src/components/EventForm/EventForm.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { showEvent } from "../../services/eventService";
 
-const EventForm = () => {
+const EditEvent = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -10,29 +13,43 @@ const EventForm = () => {
   });
   const [message, setMessage] = useState("");
 
-  const handleChange = (event) => {
+  useEffect(() => {
+    const fetchEvent = async () => {
+      const event = await showEvent(id);
+      setFormData({
+        name: event.name || "",
+        address: event.address || "",
+        dateTime: event.dateTime
+          ? new Date(event.dateTime).toISOString().slice(0, 16)
+          : "",
+        description: event.description || "",
+      });
+    };
+    fetchEvent();
+  }, [id]);
+
+  const handleChange = (e) => {
     setMessage("");
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        setMessage("You must be signed in to create an event.");
+        setMessage("You must be signed in to submit an event.");
         return;
       }
 
-      const res = await fetch("http://localhost:3000/events", {
-        method: "POST",
+      const res = await fetch(`http://localhost:3000/events/${id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           ...formData,
-
           dateTime: new Date(formData.dateTime),
         }),
       });
@@ -40,17 +57,16 @@ const EventForm = () => {
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
         setMessage(
-          errorData?.err || errorData?.message || "Failed to create event."
+          errorData?.err || errorData?.message || "Failed to update event."
         );
         return;
       }
 
       await res.json();
-
-      setFormData({ name: "", address: "", dateTime: "", description: "" });
-      setMessage("Event created successfully!");
+      setMessage("✅ Event updated successfully!");
+      navigate(`/events/show/${id}`);
     } catch (err) {
-      console.error(" Error submitting event:", err);
+      console.error(err);
       setMessage("Something went wrong. Please try again.");
     }
   };
@@ -58,7 +74,7 @@ const EventForm = () => {
   return (
     <main className="flex justify-center items-center min-h-screen bg-base-200">
       <div className="card w-full max-w-lg bg-base-100 shadow-lg p-6">
-        <h1 className="text-2xl font-bold mb-4 text-center">Create Event</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center">Edit Event</h1>
 
         {message && (
           <p
@@ -133,7 +149,7 @@ const EventForm = () => {
 
           <div className="flex justify-end gap-2">
             <button type="submit" className="btn btn-primary">
-              Create Event
+              Update Event
             </button>
             <button
               type="reset"
@@ -156,4 +172,4 @@ const EventForm = () => {
   );
 };
 
-export default EventForm;
+export default EditEvent;
