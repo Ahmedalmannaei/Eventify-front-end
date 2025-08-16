@@ -7,24 +7,29 @@ import { UserContext } from "../../contexts/UserContext";
 const Dashboard = () => {
   const { user } = useContext(UserContext);
 
-//   useEffect(() => {
-//     const fetchUsers = async () => {
-//       try {
-//         const fetchedUsers = await userService.index();
-//         console.log(fetchedUsers);
-//       } catch (err) {
-//         console.log(err);
-//       }
-//     };
-//     if (user) fetchUsers();
-//   }, [user]);
+  //   useEffect(() => {
+  //     const fetchUsers = async () => {
+  //       try {
+  //         const fetchedUsers = await userService.index();
+  //         console.log(fetchedUsers);
+  //       } catch (err) {
+  //         console.log(err);
+  //       }
+  //     };
+  //     if (user) fetchUsers();
+  //   }, [user]);
 
   return (
-    <main>
-      <h1>Welcome, {user.username}</h1>
-      <p>
-        This is the dashboard page where you can see a list of all the events.
-      </p>
+    <main className="flex flex-col items-center justify-center min-h-screen text-center px-4 bg-base-200">
+      <div className="max-w-xl">
+        <h1 className="text-4xl font-bold mb-4 text-primary">
+          Welcome, {user.username}
+        </h1>
+        <p className="text-lg text-gray-700">
+          With Eventify, you can create your own events, see others' reviews,
+          and add comments to events you've attended.
+        </p>
+      </div>
     </main>
   );
 };
