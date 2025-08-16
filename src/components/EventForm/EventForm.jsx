@@ -1,7 +1,9 @@
 // src/components/EventForm/EventForm.jsx
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const EventForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -49,6 +51,8 @@ const EventForm = () => {
 
       setFormData({ name: "", address: "", dateTime: "", description: "" });
       setMessage("Event created successfully!");
+
+      navigate("/all");
     } catch (err) {
       console.error(" Error submitting event:", err);
       setMessage("Something went wrong. Please try again.");
