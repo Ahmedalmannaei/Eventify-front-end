@@ -62,8 +62,6 @@ The database structure is designed using an **Entity Relationship Diagram (ERD)*
 
 - 🌟 DaisyUI
 
-- 🔗 Axios / Fetch API
-
 - 🛣️ React Router
 
 - 🔐 JWT Authentication
